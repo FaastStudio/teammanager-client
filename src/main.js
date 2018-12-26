@@ -4,7 +4,7 @@ import axios from 'axios'
 import router from './router'
 import store from './store'
 import BlackDashboard from './plugins/blackDashboard'
-import i18n from './i18n'
+// import i18n from './i18n'
 import ApiService from './services/api.service'
 import { TokenService } from './services/storage.service'
 import './registerServiceWorker'
@@ -25,6 +25,6 @@ new Vue({
   router,
   store,
   axios,
-  i18n,
+  // i18n,
   render: h => h(App)
 }).$mount('#app')
