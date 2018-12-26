@@ -26,7 +26,8 @@
     },
     computed: {
       tableData() {
-        return this.$t('dashboard.taskList');
+        // return this.$t('dashboard.taskList');
+        return ['Task 1', 'Task 2']
       }
     }
   }

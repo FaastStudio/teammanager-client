@@ -8,7 +8,7 @@ const ApiService = {
   },
 
   setHeader () {
-    axios.defaults.headers.common['access_token'] = `${TokenService.getToken()}`
+    axios.defaults.headers.common['x-access-token'] = `${TokenService.getToken()}`
   },
 
   removeHeader () {

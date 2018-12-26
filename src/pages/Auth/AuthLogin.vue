@@ -21,13 +21,14 @@
       </div>
     </div>
     <div class="row align-items-center">
-      <base-button slot="footer" type="primary" fill>Login</base-button>
+      <base-button @click="login" slot="footer" type="primary" fill>Login</base-button>
       <router-link to="/register" slot="footer" class="ml-4">Noch nicht dabei?</router-link>
     </div>
   </card>
 </template>
 
 <script>
+import { UserService } from '@/services/user.service.js'
 export default {
   props: {
     model: {
@@ -43,12 +44,17 @@ export default {
       response: null,
       resStatus: null
     }
+  },
+  methods: {
+    login () {
+      UserService.login(this.model.email, this.model.password)
+      this.$router.push('/dashboard')
+    }
+  },
+  computed: {
+    input () {
+      return this.model
+    }
   }
-  // computed: {
-  //   input () {
-  //     this.data = this.model
-  //     return this.model
-  //   }
-  // }
 }
 </script>

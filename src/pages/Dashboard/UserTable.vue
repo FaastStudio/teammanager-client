@@ -12,7 +12,8 @@
     },
     computed: {
       table(){
-        return this.$t('dashboard.usersTable');
+        // return this.$t('dashboard.usersTable');
+        return ['User 1', 'User 2']
       }
     }
   }

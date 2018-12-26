@@ -3,34 +3,25 @@
     <h3 slot="header" class="title">Registrieren</h3>
     <div class="row">
       <div class="col-sm-12 pl-md-1 pr-md-1">
-        <base-input label="Vorname"
-                  type="text"
-                  v-model="model.first"
-                  placeholder="Max">
-        </base-input>
+        <base-input label="Name" type="text" v-model="model.name" placeholder="Kilian Stallinger"></base-input>
       </div>
       <div class="col-sm-12 pl-md-1 pr-md-1">
-        <base-input label="Nachname"
-                  type="text"
-                  v-model="model.last"
-                  placeholder="Muster">
-        </base-input>
-      </div>
-      <div class="col-sm-12 pl-md-1 pr-md-1">
-        <base-input label="Email Addresse"
-                  type="email"
-                  v-model="model.email"
-                  placeholder="team@email.com">
-        </base-input>
+        <base-input
+          label="Email Addresse"
+          type="email"
+          v-model="model.email"
+          placeholder="team@email.com"
+        ></base-input>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12 pl-md-1 pr-md-1">
-        <base-input label="Passwort"
-                  type="password"
-                  v-model="model.password"
-                  placeholder="Passwort">
-        </base-input>
+        <base-input
+          label="Passwort"
+          type="password"
+          v-model="model.password"
+          placeholder="Passwort"
+        ></base-input>
       </div>
     </div>
     <div class="row align-items-center">
@@ -41,8 +32,7 @@
 </template>
 
 <script>
-import router from '@/router/index.js'
-import AuthService from '@/services/AuthService'
+import { UserService } from '@/services/user.service.js'
 export default {
   props: {
       model: {
@@ -53,57 +43,17 @@ export default {
       }
     },
     data () {
-      return {
-        form: null,
-        response: null,
-        resStatus: null,
-      }
+      return {}
     },
     computed: {
       input() {
-        this.form = this.model
         return this.model
       }
     },
     methods: {
-      async register () {
-        try {
-          const response = await AuthService.register({
-            first: this.input.first,
-            last: this.input.last,
-            email: this.input.email,
-            password: this.input.password
-          })
-          this.response = response.data.data
-          this.resStatus = String(response.data.status)
-          if(this.resStatus === '201') {
-            this.authenticate()
-          } else if (this.resStatus === '406') {
-            alert('Email already exists')
-          }
-        } catch (e) {
-          console.error(e)
-        }
-      },
-      async authenticate () {
-        try {
-          const response = await AuthService.authenticate({
-            email: this.input.email,
-            password: this.input.password
-          })
-          this.response = response.data.data
-          this.resStatus = String(response.status)
-          this.$store.commit('setToken', this.response.token)
-          let uid = this.response.user._id
-          this.$store.commit('setUserId', uid)
-          console.log(response.data)
-          if(this.resStatus === '201') {
-            console.log('201 auth')
-            this.$router.push('/dashboard')
-          }
-        } catch (e) {
-          alert('Authentication Error: ' + e)
-        }
+      register() {
+        UserService.register(this.model.name, this.model.email, this.model.password)
+        this.$router.push('/dashboard')
       }
     }
 }

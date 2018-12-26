@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <side-bar>
-      <template slot="links">
+      <!-- <template slot="links">
         <sidebar-link to="/dashboard" :name="$t('sidebar.dashboard')" icon="tim-icons icon-chart-pie-36"/>
         <sidebar-link to="/training/create" :name="$t('sidebar.training')" icon="tim-icons icon-spaceship"/>
         <sidebar-link to="/icons" :name="$t('sidebar.icons')" icon="tim-icons icon-atom"/>
@@ -10,7 +10,10 @@
         <sidebar-link to="/profile" :name="$t('sidebar.userProfile')" icon="tim-icons icon-single-02"/>
         <sidebar-link to="/table-list" :name="$t('sidebar.tableList')" icon="tim-icons icon-puzzle-10"/>
         <sidebar-link to="/typography" :name="$t('sidebar.typography')" icon="tim-icons icon-align-center"/>
-        <sidebar-link to="/dashboard?enableRTL=true" :name="$t('sidebar.rtlSupport')" icon="tim-icons icon-world"/>
+      </template> -->
+      <template slot="links">
+        <sidebar-link to="/login" name="Logout" icon="tim-icons icon-chart-pie-36"/>
+        <button @click="logout()">Logout</button>
       </template>
     </side-bar>
     <div class="main-panel">
@@ -30,6 +33,7 @@
 import TopNavbar from './TopNavbar.vue'
 import ContentFooter from './ContentFooter.vue'
 import DashboardContent from './Content.vue'
+import UserService from '@/services/user.service.js'
 // import MobileMenu from './MobileMenu'
 export default {
   components: {
@@ -43,6 +47,10 @@ export default {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.displaySidebar(false)
       }
+    },
+    logout () {
+      UserService.logout()
+      this.$router.push('/login')
     }
   }
 }

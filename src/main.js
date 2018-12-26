@@ -14,7 +14,7 @@ Vue.use(BlackDashboard)
 Vue.config.productionTip = false
 
 // Set BaseURL of the API
-ApiService.init(process.env.VUE_APP_ROOT_API)
+ApiService.init(process.env.API_URL || 'http://localhost:3000')
 
 // if token exists set header
 if (TokenService.getToken()) {

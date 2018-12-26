@@ -4,7 +4,6 @@ import { TokenService } from './storage.service'
 class AuthenticationError extends Error {
   constructor (errorCode, message) {
     super(message)
-    this.name = this.costructor.name
     this.message = message
     this.errorCode = errorCode
   }
@@ -19,26 +18,52 @@ const UserService = {
   login: async (email, password) => {
     const requestData = {
       method: 'post',
-      url: '/o/token/',
+      url: '/api/auth/login',
       data: {
-        grant_type: 'password',
-        username: email,
+        email: email,
         password: password
-      },
-      auth: {
-        username: process.env.VUE_APP_CLIENT_ID,
-        password: process.env.VUE_APP_CLIENT_SECRET
       }
     }
     try {
       const response = await ApiService.customRequest(requestData)
 
-      TokenService.saveToken(response.data.access_token)
+      console.log(response)
+      TokenService.saveToken(response.data.token)
+      TokenService.getToken()
       ApiService.setHeader()
 
-      ApiService.mount401Interception()
+      return response.data.token
+    } catch (err) {
+      throw new AuthenticationError(err.response.status, err.response.data.detail)
+    }
+  },
+  register: async (name, email, password) => {
+    const requestData = {
+      method: 'post',
+      url: '/api/auth/register',
+      data: {
+        name: name,
+        email: email,
+        password: password
+      }
+    }
+    try {
+      const regresponse = await ApiService.customRequest(requestData)
+      console.log('Registered' + regresponse)
 
-      return response.data.access_token
+      const response = await ApiService.customRequest({
+        method: 'post',
+        url: '/api/auth/login',
+        data: {
+          email: email,
+          password: password
+        }
+      })
+      console.log(response)
+      TokenService.saveToken(response.data.token)
+      TokenService.getToken()
+      ApiService.setHeader()
+      return response.data.token
     } catch (err) {
       throw new AuthenticationError(err.response.status, err.response.data.detail)
     }
@@ -47,7 +72,6 @@ const UserService = {
     // RMV TOKEN AND HEADER
     TokenService.removeToken()
     ApiService.removeHeader()
-    ApiService.unmount401Interceptor()
   }
 }
 
