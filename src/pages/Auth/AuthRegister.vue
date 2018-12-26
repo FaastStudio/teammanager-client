@@ -1,5 +1,5 @@
 <template>
-  <card class="col-md-4 col-12 col-sm-12 offset-md-4 offset-md-1">
+  <card class="col-md-4 col-12 col-sm-12 offset-md-4 offset-md-1" style="margin-top:25vh;">
     <h3 slot="header" class="title">Registrieren</h3>
     <div class="row">
       <div class="col-sm-12 pl-md-1 pr-md-1">
@@ -26,13 +26,15 @@
     </div>
     <div class="row align-items-center">
       <base-button @click="register()" slot="footer" type="primary" fill>Registrieren</base-button>
-      <router-link to="/auth/login" slot="footer" class="ml-4">Schon dabei?</router-link>
+      <router-link to="/auth/login" slot="footer" class="ml-4 mt-1">Schon dabei?</router-link>
     </div>
   </card>
 </template>
 
 <script>
 import { UserService } from '@/services/user.service.js'
+import { TokenService } from '@/services/storage.service.js'
+import NotificationTemplate from '@/pages/Notifications/NotificationTemplate'
 export default {
   props: {
       model: {
@@ -53,7 +55,9 @@ export default {
     methods: {
       register() {
         UserService.register(this.model.name, this.model.email, this.model.password)
-        this.$router.push('/dashboard')
+        let token = TokenService.getToken()
+        console.log(token)
+        if (token) this.$router.push('/dashboard')
       }
     }
 }

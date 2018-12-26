@@ -29,6 +29,7 @@
 
 <script>
 import { UserService } from '@/services/user.service.js'
+import { TokenService } from '@/services/storage.service.js'
 export default {
   props: {
     model: {
@@ -48,7 +49,8 @@ export default {
   methods: {
     login () {
       UserService.login(this.model.email, this.model.password)
-      this.$router.push('/dashboard')
+      let token = TokenService.getToken()
+      if (token) this.$router.push('/dashboard')
     }
   },
   computed: {

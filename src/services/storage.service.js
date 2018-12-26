@@ -5,7 +5,6 @@ const TokenService = {
     return localStorage.getItem(TOKEN_KEY)
   },
   saveToken (accessToken) {
-    console.log('Set token ' + accessToken)
     localStorage.setItem(TOKEN_KEY, accessToken)
   },
   removeToken () {

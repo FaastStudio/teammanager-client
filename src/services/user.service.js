@@ -26,15 +26,14 @@ const UserService = {
     }
     try {
       const response = await ApiService.customRequest(requestData)
-
-      console.log(response)
       TokenService.saveToken(response.data.token)
       TokenService.getToken()
       ApiService.setHeader()
 
       return response.data.token
     } catch (err) {
-      throw new AuthenticationError(err.response.status, err.response.data.detail)
+      console.log(err)
+      // throw new AuthenticationError(err, err.response)
     }
   },
   register: async (name, email, password) => {
@@ -48,9 +47,11 @@ const UserService = {
       }
     }
     try {
+      // Register
       const regresponse = await ApiService.customRequest(requestData)
       console.log('Registered' + regresponse)
 
+      // Login
       const response = await ApiService.customRequest({
         method: 'post',
         url: '/api/auth/login',
@@ -59,7 +60,6 @@ const UserService = {
           password: password
         }
       })
-      console.log(response)
       TokenService.saveToken(response.data.token)
       TokenService.getToken()
       ApiService.setHeader()
