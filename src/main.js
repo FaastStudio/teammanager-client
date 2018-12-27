@@ -16,7 +16,9 @@ Vue.config.productionTip = false
 // Set BaseURL of the API
 // ApiService.init(String(process.env.API_URL))
 ApiService.init('https://teammanager-server.herokuapp.com/')
-console.log(process.env.API_URL)
+console.log('api_url: ' + process.env.API_URL)
+console.log('ENV test: ' + process.env.test)
+console.log('env: ' + process.env)
 
 // if token exists set header
 // if token exists set LoggedIn status in store
