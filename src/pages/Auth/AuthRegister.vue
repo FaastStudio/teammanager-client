@@ -34,31 +34,34 @@
 <script>
 import { UserService } from '@/services/user.service.js'
 import { TokenService } from '@/services/storage.service.js'
-import NotificationTemplate from '@/pages/Notifications/NotificationTemplate'
 export default {
   props: {
-      model: {
-        type: Object,
-        default: () => {
-          return {};
-        }
-      }
-    },
-    data () {
-      return {}
-    },
-    computed: {
-      input() {
-        return this.model
-      }
-    },
-    methods: {
-      register() {
-        UserService.register(this.model.name, this.model.email, this.model.password)
-        let token = TokenService.getToken()
-        console.log(token)
-        if (token) this.$router.push('/dashboard')
+    model: {
+      type: Object,
+      default: () => {
+        return {}
       }
     }
+  },
+  data() {
+    return {}
+  },
+  computed: {
+    input() {
+      return this.model
+    }
+  },
+  methods: {
+    register() {
+      UserService.register(
+        this.model.name,
+        this.model.email,
+        this.model.password
+      )
+      let token = TokenService.getToken()
+      console.log(token)
+      if (token) this.$router.push('/dashboard')
+    }
+  }
 }
 </script>

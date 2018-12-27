@@ -105,8 +105,8 @@
   </div>
 </template>
 <script>
-import NotificationTemplate from "./Notifications/NotificationTemplate";
-import { BaseAlert } from "@/components";
+import NotificationTemplate from './Notifications/NotificationTemplate'
+import { BaseAlert } from '@/components'
 
 export default {
   components: {
@@ -114,18 +114,17 @@ export default {
   },
   data() {
     return {
-      type: ["", "info", "success", "warning", "danger"],
+      type: ['', 'info', 'success', 'warning', 'danger'],
       notifications: {
         topCenter: false
       }
-    };
+    }
   },
   methods: {
     notifyVue(verticalAlign, horizontalAlign) {
-      const color = Math.floor(Math.random() * 4 + 1);
       this.$notify({
         component: NotificationTemplate,
-        icon: "tim-icons icon-bell-55",
+        icon: 'tim-icons icon-bell-55',
         horizontalAlign: horizontalAlign,
         verticalAlign: verticalAlign,
         type: 'success',
@@ -133,7 +132,7 @@ export default {
       })
     }
   }
-};
+}
 </script>
 <style>
 </style>

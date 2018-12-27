@@ -27,22 +27,23 @@
       <collapse-transition>
         <div class="collapse navbar-collapse show" v-show="showMenu">
           <ul class="navbar-nav" :class="'ml-auto'">
-            <div class="search-bar input-group" @click="searchModalVisible = true">
-              <!-- <input type="text" class="form-control" placeholder="Search...">
-              <div class="input-group-addon"><i class="tim-icons icon-zoom-split"></i></div> -->
+            <!-- You can choose types of search input -->
+            <!-- <div class="search-bar input-group" @click="searchModalVisible = true">
+              <input type="text" class="form-control" placeholder="Search...">
+              <div class="input-group-addon"><i class="tim-icons icon-zoom-split"></i></div>
               <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal">
                 <i class="tim-icons icon-zoom-split"></i>
               </button>
-              <!-- You can choose types of search input -->
-            </div>
-            <modal :show.sync="searchModalVisible"
+            </div> -->
+            <!-- <modal :show.sync="searchModalVisible"
                    class="modal-search"
                    id="searchModal"
                    :centered="false"
                    :show-close="true">
               <input slot="header" v-model="searchQuery" type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
-            </modal>
-            <base-dropdown tag="li"
+            </modal> -->
+            <!-- Notifications Dropdown -->
+            <!-- <base-dropdown tag="li"
                            title-tag="a" class="nav-item">
               <a slot="title" href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true">
                 <div class="notification d-none d-lg-block d-xl-block"></div>
@@ -66,17 +67,17 @@
               <li class="nav-link">
                 <a href="#" class="nav-item dropdown-item">Another one</a>
               </li>
-            </base-dropdown>
+            </base-dropdown> -->
             <base-dropdown tag="li"
                            title-tag="a"
                            class="nav-item"
                            menu-classes="dropdown-navbar">
               <a slot="title" href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="true">
                 <div class="photo">
-                  <img src="img/anime3.png">
+                  <img src="https://placehold.it/30">
                 </div>
                 <b class="caret d-none d-lg-block d-xl-block"></b>
-                <p class="d-lg-none">
+                <p class="d-lg-none" @click="logout()">
                   Log out
                 </p>
               </a>
@@ -99,20 +100,22 @@
 </template>
 <script>
 import { CollapseTransition } from 'vue2-transitions'
-import Modal from '@/components/Modal'
+import UserService from '@/services/user.service.js'
+import { TokenService } from '@/services/storage.service.js'
+// import Modal from '@/components/Modal'
 
 export default {
   components: {
-    CollapseTransition,
-    Modal
+    CollapseTransition
+    // Modal
   },
   computed: {
-    routeName () {
+    routeName() {
       const { name } = this.$route
       return this.capitalizeFirstLetter(name)
     }
   },
-  data () {
+  data() {
     return {
       activeNotifications: false,
       showMenu: false,
@@ -121,23 +124,32 @@ export default {
     }
   },
   methods: {
-    capitalizeFirstLetter (string) {
+    capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1)
     },
-    toggleNotificationDropDown () {
+    toggleNotificationDropDown() {
       this.activeNotifications = !this.activeNotifications
     },
-    closeDropDown () {
+    closeDropDown() {
       this.activeNotifications = false
     },
-    toggleSidebar () {
+    toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar)
     },
-    hideSidebar () {
+    hideSidebar() {
       this.$sidebar.displaySidebar(false)
     },
-    toggleMenu () {
+    toggleMenu() {
       this.showMenu = !this.showMenu
+    },
+    logout() {
+      UserService.logout()
+      if (!TokenService.getToken()) {
+        this.$store.commit('setAsLoggedOut')
+      }
+      if (!this.$store.state.auth.loggedIn) {
+        this.$router.push('/login')
+      }
     }
   }
 }

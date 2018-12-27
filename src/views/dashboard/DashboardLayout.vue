@@ -48,7 +48,7 @@ export default {
     },
     logout() {
       UserService.logout()
-      if (TokenService.getToken()) {
+      if (!TokenService.getToken()) {
         this.$store.commit('setAsLoggedOut')
       }
       if (!this.$store.state.auth.loggedIn) {

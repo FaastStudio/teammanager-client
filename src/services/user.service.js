@@ -2,7 +2,7 @@ import ApiService from './api.service'
 import { TokenService } from './storage.service'
 
 class AuthenticationError extends Error {
-  constructor (errorCode, message) {
+  constructor(errorCode, message) {
     super(message)
     this.message = message
     this.errorCode = errorCode
@@ -10,7 +10,6 @@ class AuthenticationError extends Error {
 }
 
 const UserService = {
-
   // Login User and store access token to TokenService
   // @returns access_token
   // @throws AuthenticationError
@@ -65,10 +64,13 @@ const UserService = {
       ApiService.setHeader()
       return response.data.token
     } catch (err) {
-      throw new AuthenticationError(err.response.status, err.response.data.detail)
+      throw new AuthenticationError(
+        err.response.status,
+        err.response.data.detail
+      )
     }
   },
-  logout () {
+  logout() {
     // RMV TOKEN AND HEADER
     TokenService.removeToken()
     ApiService.removeHeader()

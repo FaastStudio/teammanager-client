@@ -23,7 +23,8 @@
         v-on="listeners"
         :type="type"
         class="form-control"
-        aria-describedby="addon-right addon-left">
+        aria-describedby="addon-right addon-left"
+        :required="required">
     </slot>
     <slot name="addonRight">
       <span v-if="addonRightIcon" class="input-group-append">
@@ -36,68 +37,77 @@
   </div>
 </template>
 <script>
-  export default {
-    inheritAttrs: false,
-    name: "base-input",
-    props: {
-      type: {
-        type: String,
-        description: "Input type",
-        default: "text"
-      },
-      label: {
-        type: String,
-        description: "Input label"
-      },
-      value: {
-        type: [String, Number],
-        description: "Input value"
-      },
-      addonRightIcon: {
-        type: String,
-        description: "Input icon on the right"
-      },
-      addonLeftIcon: {
-        type: String,
-        description: "Input icon on the left"
-      },
+export default {
+  inheritAttrs: false,
+  name: 'base-input',
+  props: {
+    required: {
+      type: String,
+      description: 'Input required',
+      default: 'false'
     },
-    model: {
-      prop: 'value',
-      event: 'input'
+    type: {
+      type: String,
+      description: 'Input type',
+      default: 'text'
     },
-    data() {
+    label: {
+      type: String,
+      description: 'Input label'
+    },
+    value: {
+      type: [String, Number],
+      description: 'Input value'
+    },
+    addonRightIcon: {
+      type: String,
+      description: 'Input icon on the right'
+    },
+    addonLeftIcon: {
+      type: String,
+      description: 'Input icon on the left'
+    }
+  },
+  model: {
+    prop: 'value',
+    event: 'input'
+  },
+  data() {
+    return {
+      focused: false
+    }
+  },
+  computed: {
+    hasIcon() {
+      const { addonRight, addonLeft } = this.$slots
+      return (
+        addonRight !== undefined ||
+        addonLeft !== undefined ||
+        this.addonRightIcon !== undefined ||
+        this.addonLeftIcon !== undefined
+      )
+    },
+    listeners() {
       return {
-        focused: false
-      }
-    },
-    computed: {
-      hasIcon() {
-        const { addonRight, addonLeft } = this.$slots;
-        return addonRight !== undefined || addonLeft !== undefined || this.addonRightIcon !== undefined || this.addonLeftIcon !== undefined;
-      },
-      listeners() {
-        return {
-          ...this.$listeners,
-          input: this.onInput,
-          blur: this.onBlur,
-          focus: this.onFocus
-        }
-      }
-    },
-    methods: {
-      onInput(evt) {
-        this.$emit('input', evt.target.value)
-      },
-      onFocus() {
-        this.focused = true;
-      },
-      onBlur() {
-        this.focused = false;
+        ...this.$listeners,
+        input: this.onInput,
+        blur: this.onBlur,
+        focus: this.onFocus
       }
     }
+  },
+  methods: {
+    onInput(evt) {
+      this.$emit('input', evt.target.value)
+    },
+    onFocus() {
+      this.focused = true
+    },
+    onBlur() {
+      this.focused = false
+    }
   }
+}
 </script>
 <style>
-
 </style>

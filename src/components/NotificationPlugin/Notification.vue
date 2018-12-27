@@ -30,7 +30,7 @@ export default {
   components: {
     contentRender: {
       props: ['component'],
-      render (h) {
+      render(h) {
         return h(this.component)
       }
     }
@@ -59,13 +59,7 @@ export default {
       type: String,
       default: 'info',
       validator: value => {
-        let acceptedValues = [
-          'info',
-          'primary',
-          'danger',
-          'warning',
-          'success'
-        ]
+        let acceptedValues = ['info', 'primary', 'danger', 'warning', 'success']
         return acceptedValues.indexOf(value) !== -1
       }
     },
@@ -93,19 +87,19 @@ export default {
     },
     clickHandler: Function
   },
-  data () {
+  data() {
     return {
       elmHeight: 0
     }
   },
   computed: {
-    hasIcon () {
+    hasIcon() {
       return this.icon && this.icon.length > 0
     },
-    alertType () {
+    alertType() {
       return `alert-${this.type}`
     },
-    customPosition () {
+    customPosition() {
       let initialMargin = 20
       let alertHeight = this.elmHeight + 10
       let sameAlertsCount = this.$notifications.state.filter(alert => {
@@ -129,10 +123,10 @@ export default {
     }
   },
   methods: {
-    close () {
+    close() {
       this.$emit('close', this.timestamp)
     },
-    tryClose (evt) {
+    tryClose(evt) {
       if (this.clickHandler) {
         this.clickHandler(evt, this)
       }
@@ -141,7 +135,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.elmHeight = this.$el.clientHeight
     if (this.timeout) {
       setTimeout(this.close, this.timeout)
