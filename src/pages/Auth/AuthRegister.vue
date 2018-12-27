@@ -1,9 +1,10 @@
 <template>
   <card class="col-md-4 col-12 col-sm-12 offset-md-4 offset-md-1" style="margin-top:25vh;">
     <h3 slot="header" class="title">Registrieren</h3>
-    <div class="row">
+    <form>
+      <div class="row">
       <div class="col-sm-12 pl-md-1 pr-md-1">
-        <base-input label="Name" type="text" v-model="model.name" placeholder="Kilian Stallinger"></base-input>
+        <base-input label="Name" type="text" v-model="model.name" placeholder="Voller Name"></base-input>
       </div>
       <div class="col-sm-12 pl-md-1 pr-md-1">
         <base-input
@@ -21,19 +22,22 @@
           type="password"
           v-model="model.password"
           placeholder="Passwort"
+          @keyup.enter.native="register()"
         ></base-input>
       </div>
     </div>
     <div class="row align-items-center">
-      <base-button @click="register()" slot="footer" type="primary" fill>Registrieren</base-button>
-      <router-link to="/auth/login" slot="footer" class="ml-4 mt-1">Schon dabei?</router-link>
+      <base-button @click="register()" slot="footer" type="primary" fill>Senden</base-button>
+      <router-link to="/login" slot="footer" class="ml-4 mt-1">Schon dabei?</router-link>
     </div>
+    </form>
   </card>
 </template>
 
 <script>
 import { UserService } from '@/services/user.service.js'
 import { TokenService } from '@/services/storage.service.js'
+import Message from '@/components/NotificationPlugin/Notification'
 export default {
   props: {
     model: {
@@ -57,10 +61,44 @@ export default {
         this.model.name,
         this.model.email,
         this.model.password
-      )
-      let token = TokenService.getToken()
-      console.log(token)
-      if (token) this.$router.push('/dashboard')
+      ).then(res => {
+        console.log(res)
+        if (res) {
+          this.checkLogin()
+        } else {
+          this.notifyVue(
+            'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
+            'danger'
+          )
+        }
+      })
+    },
+    checkLogin() {
+      if (TokenService.getToken()) {
+        this.$store.commit('setAsLoggedIn')
+        if (this.$store.state.auth.loggedIn) {
+          this.$router.push('/dashboard')
+        }
+        this.notifyVue('Willkommen!', 'success')
+      } else {
+        this.notifyVue(
+          'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
+          'danger'
+        )
+      }
+      if (this.$store.state.auth.loggedIn) {
+        this.$router.push('/dashboard')
+      }
+    },
+    notifyVue(message, type) {
+      this.$notify({
+        component: Message,
+        message: message,
+        icon: 'tim-icons icon-bell-55',
+        horizontalAlign: 'center',
+        verticalAlign: 'top',
+        type: type
+      })
     }
   }
 }

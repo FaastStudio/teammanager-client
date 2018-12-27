@@ -58,6 +58,11 @@ export default {
       UserService.login(this.model.email, this.model.password).then(res => {
         if (res) {
           this.checkLogin()
+        } else {
+          this.notifyVue(
+            'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
+            'danger'
+          )
         }
       })
     },
