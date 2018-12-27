@@ -1,8 +1,8 @@
 import DashboardLayout from '@/views/dashboard/DashboardLayout.vue'
 // GeneralViews
 import NotFound from '@/pages/NotFoundPage.vue'
-import LoginView from '@/pages/Auth/AuthLogin.vue'
-import RegisterView from '@/pages/Auth/AuthRegister.vue'
+import LoginView from '@/views/Auth/AuthLogin.vue'
+import RegisterView from '@/views/Auth/AuthRegister.vue'
 
 // Admin pages
 import Dashboard from '@/pages/Dashboard.vue'
