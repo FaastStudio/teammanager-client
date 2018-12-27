@@ -10,7 +10,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes, // short for routes: routes
   linkExactActiveClass: 'active',
-  scrollBehavior: (to) => {
+  scrollBehavior: to => {
     if (to.hash) {
       return { selector: to.hash }
     } else {
@@ -21,7 +21,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const isPublic = to.matched.some(record => record.meta.public)
-  const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
+  const onlyWhenLoggedOut = to.matched.some(
+    record => record.meta.onlyWhenLoggedOut
+  )
   const loggedIn = !!TokenService.getToken()
   if (!isPublic && !loggedIn) {
     return next({
