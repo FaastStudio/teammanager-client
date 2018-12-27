@@ -17,8 +17,12 @@ Vue.config.productionTip = false
 ApiService.init(process.env.API_URL || 'http://localhost:3000')
 
 // if token exists set header
+// if token exists set LoggedIn status in store
 if (TokenService.getToken()) {
   ApiService.setHeader()
+  store.commit('setAsLoggedIn')
+} else {
+  store.commit('setAsLoggedOut')
 }
 
 new Vue({
