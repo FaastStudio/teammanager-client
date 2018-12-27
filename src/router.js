@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes/routes'
+import store from './store'
 import { TokenService } from './services/storage.service'
 Vue.use(VueRouter)
 
@@ -23,6 +24,12 @@ router.beforeEach((to, from, next) => {
   const isPublic = to.matched.some(record => record.meta.public)
   const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
   const loggedIn = !!TokenService.getToken()
+  console.log('loggedIn: ' + !!TokenService.getToken())
+  if (loggedIn === true) {
+    store.commit('setAsLoggedIn')
+  } else {
+    store.commit('setAsLoggedOut')
+  }
   if (!isPublic && !loggedIn) {
     return next({
       path: '/login',
