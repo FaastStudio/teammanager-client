@@ -29,7 +29,7 @@ const UserService = {
       TokenService.getToken()
       ApiService.setHeader()
 
-      return response.data.token
+      return response.data
     } catch (err) {
       console.log(err)
       // throw new AuthenticationError(err, err.response)
@@ -47,8 +47,7 @@ const UserService = {
     }
     try {
       // Register
-      const regresponse = await ApiService.customRequest(requestData)
-      console.log('Registered' + regresponse)
+      await ApiService.customRequest(requestData)
 
       // Login
       const response = await ApiService.customRequest({
@@ -62,7 +61,7 @@ const UserService = {
       TokenService.saveToken(response.data.token)
       TokenService.getToken()
       ApiService.setHeader()
-      return response.data.token
+      return response.data
     } catch (err) {
       throw new AuthenticationError(
         err.response.status,

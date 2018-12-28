@@ -1,13 +1,13 @@
 const TOKEN_KEY = 'x-access-token'
 
 const TokenService = {
-  getToken () {
+  getToken() {
     return localStorage.getItem(TOKEN_KEY)
   },
-  saveToken (accessToken) {
+  saveToken(accessToken) {
     localStorage.setItem(TOKEN_KEY, accessToken)
   },
-  removeToken () {
+  removeToken() {
     localStorage.removeItem(TOKEN_KEY)
   }
 }
