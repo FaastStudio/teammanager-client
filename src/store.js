@@ -7,17 +7,18 @@ export default new Vuex.Store({
   state: {
     auth: {
       loggedIn: false
+    },
+    app: {
+      isLightMode: false
     }
   },
   mutations: {
-    setAsLoggedIn (state) {
+    setAsLoggedIn(state) {
       state.auth.loggedIn = true
     },
-    setAsLoggedOut (state) {
+    setAsLoggedOut(state) {
       state.auth.loggedIn = false
     }
   },
-  actions: {
-
-  }
+  actions: {}
 })

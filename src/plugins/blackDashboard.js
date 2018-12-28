@@ -9,7 +9,7 @@ import '@/assets/sass/black-dashboard.scss'
 import '@/assets/css/nucleo-icons.css'
 
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.use(GlobalComponents)
     Vue.use(GlobalDirectives)
     Vue.use(SideBar)
