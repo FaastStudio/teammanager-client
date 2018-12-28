@@ -8,6 +8,9 @@ export default new Vuex.Store({
     auth: {
       loggedIn: false
     },
+    user: {
+      userId: null
+    },
     app: {
       isLightMode: false
     }
@@ -18,6 +21,12 @@ export default new Vuex.Store({
     },
     setAsLoggedOut(state) {
       state.auth.loggedIn = false
+    },
+    setUserId(state, userId) {
+      state.user.userId = userId
+    },
+    setUserData(state, data) {
+      state.user = data
     }
   },
   actions: {}

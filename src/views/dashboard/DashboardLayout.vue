@@ -33,6 +33,8 @@ import DashboardContent from './Content.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import UserService from '@/services/user.service.js'
 import { TokenService } from '@/services/storage.service.js'
+import ApiService from '@/services/api.service.js'
+
 export default {
   components: {
     TopNavbar,
@@ -54,7 +56,23 @@ export default {
       if (!this.$store.state.auth.loggedIn) {
         this.$router.push('/login')
       }
+    },
+    fetchUserData() {
+      const userId = this.$store.state.user.userId
+      let customRequest = {
+        method: 'GET',
+        url: `api/auth/me`,
+        data: {
+          userId
+        }
+      }
+      ApiService.customRequest(customRequest).then(res => {
+        this.$store.state.user = res.data
+      })
     }
+  },
+  mounted() {
+    this.fetchUserData()
   }
 }
 </script>

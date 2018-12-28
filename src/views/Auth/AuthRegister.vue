@@ -1,5 +1,6 @@
 <template>
-  <card class="col-md-4 col-12 col-sm-12 offset-md-4 offset-md-1" style="margin-top:25vh;">
+  <div style="width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center;">
+    <card class="col-md-4 col-12">
     <h3 slot="header" class="title">Registrieren</h3>
     <form>
       <div class="row">
@@ -32,6 +33,7 @@
     </div>
     </form>
   </card>
+  </div>
 </template>
 
 <script>
@@ -62,9 +64,8 @@ export default {
         this.model.email,
         this.model.password
       ).then(res => {
-        console.log(res)
-        if (res) {
-          this.checkLogin()
+        if (res.auth) {
+          this.checkLogin(res.userId)
         } else {
           this.notifyVue(
             'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
@@ -73,9 +74,10 @@ export default {
         }
       })
     },
-    checkLogin() {
+    checkLogin(userId) {
       if (TokenService.getToken()) {
         this.$store.commit('setAsLoggedIn')
+        this.$store.commit('setUserId', userId)
         if (this.$store.state.auth.loggedIn) {
           this.$router.push('/dashboard')
         }

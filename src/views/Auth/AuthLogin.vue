@@ -60,8 +60,8 @@ export default {
   methods: {
     login() {
       UserService.login(this.model.email, this.model.password).then(res => {
-        if (res) {
-          this.checkLogin()
+        if (res.auth) {
+          this.checkLogin(res.userId)
         } else {
           this.notifyVue(
             'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
@@ -70,9 +70,10 @@ export default {
         }
       })
     },
-    checkLogin() {
+    checkLogin(userId) {
       if (TokenService.getToken()) {
         this.$store.commit('setAsLoggedIn')
+        this.$store.commit('setUserId', userId)
         if (this.$store.state.auth.loggedIn) {
           this.$router.push('/dashboard')
         }

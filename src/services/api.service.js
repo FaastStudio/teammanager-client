@@ -2,32 +2,33 @@ import axios from 'axios'
 import { TokenService } from './storage.service'
 
 const ApiService = {
-
-  init (baseURL) {
+  init(baseURL) {
     axios.defaults.baseURL = baseURL
   },
 
-  setHeader () {
-    axios.defaults.headers.common['x-access-token'] = `${TokenService.getToken()}`
+  setHeader() {
+    axios.defaults.headers.common[
+      'x-access-token'
+    ] = `${TokenService.getToken()}`
   },
 
-  removeHeader () {
+  removeHeader() {
     axios.defaults.headers.common = {}
   },
 
-  get (resource, data) {
+  get(resource, data) {
     return axios.get(resource, data)
   },
 
-  post (resource, data) {
+  post(resource, data) {
     return axios.post(resource, data)
   },
 
-  put (resource, data) {
+  put(resource, data) {
     return axios.put(resource, data)
   },
 
-  delete (resource) {
+  delete(resource) {
     return axios.delete(resource)
   },
 
@@ -37,10 +38,9 @@ const ApiService = {
   //   -method
   //   -url
   //   -data ... request payload
-  customRequest (data) {
+  customRequest(data) {
     return axios(data)
   }
-
 }
 
 export default ApiService
