@@ -6,6 +6,7 @@ import RegisterView from '@/views/Auth/AuthRegister.vue'
 
 // Admin pages
 import Dashboard from '@/pages/Dashboard.vue'
+import TeamPage from '@/pages/Team.vue'
 import Training from '@/pages/Training.vue'
 import TrainingCreate from '@/pages/TrainingCreate.vue'
 import Profile from '@/pages/Profile.vue'
@@ -25,6 +26,11 @@ const routes = [
         path: 'dashboard',
         name: 'dashboard',
         component: Dashboard
+      },
+      {
+        path: 'team',
+        name: 'Team',
+        component: TeamPage
       },
       {
         path: 'profile',

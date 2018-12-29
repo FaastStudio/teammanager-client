@@ -13,7 +13,8 @@ export default new Vuex.Store({
     },
     app: {
       isLightMode: false
-    }
+    },
+    teamList: []
   },
   mutations: {
     setAsLoggedIn(state) {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     },
     setUserData(state, data) {
       state.user = data
+    },
+    setTeamList(state, list) {
+      state.teamList = list
     }
   },
   actions: {}

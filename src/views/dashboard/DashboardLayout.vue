@@ -3,6 +3,7 @@
     <side-bar>
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="tim-icons icon-chart-pie-36"/>
+        <sidebar-link to="/team" name="Team" icon="tim-icons icon-single-02"/>
         <!-- <sidebar-link to="/training/create" :name="$t('sidebar.training')" icon="tim-icons icon-spaceship"/> -->
         <sidebar-link to="/icons" name="Icons" icon="tim-icons icon-atom"/>
         <!-- <sidebar-link to="/maps" :name="$t('sidebar.maps')" icon="tim-icons icon-pin"/> -->
@@ -68,6 +69,20 @@ export default {
       }
       ApiService.customRequest(customRequest).then(res => {
         this.$store.state.user = res.data
+        this.fetchTeamList(res.data._id)
+      })
+    },
+    fetchTeamList(ID) {
+      const userId = ID
+      const data = {
+        url: '/players',
+        method: 'GET',
+        params: {
+          userId: userId
+        }
+      }
+      ApiService.customRequest(data).then(res => {
+        this.$store.commit('setTeamList', res.data)
       })
     }
   },
