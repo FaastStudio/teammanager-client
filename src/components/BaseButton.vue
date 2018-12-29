@@ -60,7 +60,7 @@ export default {
     }
   },
   methods: {
-    handleClick (evt) {
+    handleClick(evt) {
       this.$emit('click', evt)
     }
   }

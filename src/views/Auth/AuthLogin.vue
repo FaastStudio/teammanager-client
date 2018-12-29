@@ -11,7 +11,6 @@
               type="email"
               v-model="model.email"
               placeholder="team@email.com"
-              @keyup.enter.native="login()"
               required="true"
             ></base-input>
           </div>
@@ -29,7 +28,7 @@
           </div>
         </div>
         <div class="row align-items-center">
-          <base-button @click="login()" slot="footer" type="primary" fill>Login</base-button>
+          <base-button @click="login()" slot="footer" type="submit" :class="'btn-primary'" fill>Login</base-button>
           <router-link to="/register" slot="footer" class="ml-4">Noch nicht dabei?</router-link>
         </div>
       </form>
@@ -51,11 +50,7 @@ export default {
     }
   },
   data() {
-    return {
-      data: null,
-      response: null,
-      resStatus: null
-    }
+    return {}
   },
   methods: {
     login() {
@@ -97,11 +92,6 @@ export default {
         verticalAlign: 'top',
         type: type
       })
-    }
-  },
-  computed: {
-    input() {
-      return this.model
     }
   }
 }
