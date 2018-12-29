@@ -9,6 +9,10 @@ import ApiService from './services/api.service'
 import { TokenService } from './services/storage.service'
 import './registerServiceWorker'
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load()
+}
+
 Vue.use(BlackDashboard)
 
 Vue.config.productionTip = false
