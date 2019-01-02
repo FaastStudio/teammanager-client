@@ -71,23 +71,7 @@ export default {
         this.$store.state.user = res.data
         this.fetchTeamList(res.data._id)
       })
-    },
-    fetchTeamList(ID) {
-      const userId = ID
-      const data = {
-        url: '/players',
-        method: 'GET',
-        params: {
-          userId: userId
-        }
-      }
-      ApiService.customRequest(data).then(res => {
-        this.$store.commit('setTeamList', res.data)
-      })
     }
-  },
-  mounted() {
-    this.fetchUserData()
   }
 }
 </script>

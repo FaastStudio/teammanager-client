@@ -1,5 +1,22 @@
 <template>
-  <div style="height: calc(100vh - 70px);">
+  <div>
     <router-view></router-view>
   </div>
 </template>
+
+<script>
+export default {
+  created() {
+    this.$store.dispatch(
+      'Players/fetchAllPlayers',
+      this.$store.state.user.userId
+    )
+  },
+  updated() {
+    this.$store.dispatch(
+      'Players/fetchAllPlayers',
+      this.$store.state.user.userId
+    )
+  }
+}
+</script>

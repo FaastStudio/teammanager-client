@@ -73,6 +73,7 @@ const UserService = {
     // RMV TOKEN AND HEADER
     TokenService.removeToken()
     ApiService.removeHeader()
+    localStorage.removeItem('userId')
   }
 }
 

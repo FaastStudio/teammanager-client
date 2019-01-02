@@ -57,6 +57,7 @@ export default {
       UserService.login(this.model.email, this.model.password).then(res => {
         if (res.auth) {
           this.checkLogin(res.userId)
+          console.log('Uid:' + res.userId)
         } else {
           this.notifyVue(
             'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',

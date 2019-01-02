@@ -26,6 +26,7 @@ router.beforeEach((to, from, next) => {
   )
   const loggedIn = !!TokenService.getToken()
   if (!isPublic && !loggedIn) {
+    localStorage.removeItem('userId')
     return next({
       path: '/login',
       redirect: '/login'

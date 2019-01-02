@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+// import modules
+import Players from './store/Players'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -13,8 +16,7 @@ export default new Vuex.Store({
     },
     app: {
       isLightMode: false
-    },
-    teamList: []
+    }
   },
   mutations: {
     setAsLoggedIn(state) {
@@ -25,6 +27,7 @@ export default new Vuex.Store({
     },
     setUserId(state, userId) {
       state.user.userId = userId
+      localStorage.setItem('userId', userId)
     },
     setUserData(state, data) {
       state.user = data
@@ -33,5 +36,8 @@ export default new Vuex.Store({
       state.teamList = list
     }
   },
-  actions: {}
+  actions: {},
+  modules: {
+    Players
+  }
 })
