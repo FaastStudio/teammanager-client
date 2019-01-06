@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <side-bar>
+    <side-bar :title=sideBarTitle>
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="tim-icons icon-chart-pie-36"/>
         <sidebar-link to="/team" name="Team" icon="tim-icons icon-single-02"/>
@@ -34,7 +34,7 @@ import DashboardContent from './Content.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import UserService from '@/services/user.service.js'
 import { TokenService } from '@/services/storage.service.js'
-import ApiService from '@/services/api.service.js'
+import store from '@/store'
 
 export default {
   components: {
@@ -57,20 +57,11 @@ export default {
       if (!this.$store.state.auth.loggedIn) {
         this.$router.push('/login')
       }
-    },
-    fetchUserData() {
-      const userId = this.$store.state.user.userId
-      let customRequest = {
-        method: 'GET',
-        url: `api/auth/me`,
-        data: {
-          userId
-        }
-      }
-      ApiService.customRequest(customRequest).then(res => {
-        this.$store.state.user = res.data
-        this.fetchTeamList(res.data._id)
-      })
+    }
+  },
+  computed: {
+    sideBarTitle() {
+      return store.getters['User/getFullName']
     }
   }
 }

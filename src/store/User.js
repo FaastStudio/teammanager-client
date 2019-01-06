@@ -16,5 +16,9 @@ export default {
       state.userData = data
     }
   },
-  getters: {}
+  getters: {
+    getFullName(state) {
+      return state.userData.name
+    }
+  }
 }
