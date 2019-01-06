@@ -26,7 +26,7 @@
               required="true"
             ></base-input>
             <div class="col mb-3 d-flex align-items-center">
-              <input v-bind="rememberMe" type="checkbox" name="rememberMe" id="rememberMe" class="ml-0 mr-2">
+              <input v-model="rememberMe" type="checkbox" name="rememberMe" id="rememberMe" class="ml-0 mr-2">
               <span>Angemeldet bleiben?</span>
             </div>
           </div>

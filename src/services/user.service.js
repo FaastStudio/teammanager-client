@@ -13,28 +13,6 @@ const UserService = {
   // Login User and store access token to TokenService
   // @returns access_token
   // @throws AuthenticationError
-
-  login: async (email, password) => {
-    const requestData = {
-      method: 'post',
-      url: '/api/auth/login',
-      data: {
-        email: email,
-        password: password
-      }
-    }
-    try {
-      const response = await ApiService.customRequest(requestData)
-      TokenService.saveToken(response.data.token)
-      TokenService.getToken()
-      ApiService.setHeader()
-
-      return response.data
-    } catch (err) {
-      console.log(err)
-      // throw new AuthenticationError(err, err.response)
-    }
-  },
   register: async (name, email, password) => {
     const requestData = {
       method: 'post',
