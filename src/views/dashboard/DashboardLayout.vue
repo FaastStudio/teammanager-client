@@ -61,11 +61,7 @@ export default {
   },
   computed: {
     sideBarTitle() {
-      let name = store.getters['User/getFullName']
-      if (name !== null) {
-        return name
-      }
-      return 'Dein Name'
+      return store.getters['User/getFullName']
     }
   }
 }

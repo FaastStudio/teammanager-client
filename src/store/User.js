@@ -18,7 +18,10 @@ export default {
   },
   getters: {
     getFullName(state) {
-      return state.userData.name
+      if (state.userData !== null) {
+        return state.userData.name
+      }
+      return 'Dein Name'
     }
   }
 }
