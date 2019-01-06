@@ -98,7 +98,7 @@ export default {
       const payload = {}
       payload.email = this.model.email
       payload.password = this.model.password
-      payload.rememberMe = false
+      payload.rememberMe = true
       this.$store.dispatch('Auth/login', payload)
     }
   }
