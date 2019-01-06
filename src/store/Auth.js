@@ -65,5 +65,12 @@ export default {
       state.isAuthenticated = status
     }
   },
-  getters: {}
+  getters: {
+    getAuthState(state) {
+      return state.isAuthenticated
+    },
+    getAuthToken(state) {
+      return state.token
+    }
+  }
 }
