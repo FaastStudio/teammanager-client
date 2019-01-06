@@ -37,9 +37,9 @@
 </template>
 
 <script>
-import { UserService } from '@/services/user.service.js'
-import { TokenService } from '@/services/storage.service.js'
-import Message from '@/components/NotificationPlugin/Notification'
+// import { UserService } from '@/services/user.service.js'
+// import { TokenService } from '@/services/storage.service.js'
+// import Message from '@/components/NotificationPlugin/Notification'
 export default {
   props: {
     model: {
@@ -53,46 +53,53 @@ export default {
     return {}
   },
   methods: {
+    // login() {
+    //   UserService.login(this.model.email, this.model.password).then(res => {
+    //     if (res.auth) {
+    //       this.checkLogin(res.userId)
+    //       console.log('Uid:' + res.userId)
+    //     } else {
+    //       this.notifyVue(
+    //         'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
+    //         'danger'
+    //       )
+    //     }
+    //   })
+    // },
+    // checkLogin(userId) {
+    //   if (TokenService.getToken()) {
+    //     this.$store.commit('setAsLoggedIn')
+    //     this.$store.commit('setUserId', userId)
+    //     if (this.$store.state.auth.loggedIn) {
+    //       this.$router.push('/dashboard')
+    //     }
+    //     this.notifyVue('Willkommen zurück!', 'success')
+    //   } else {
+    //     this.notifyVue(
+    //       'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
+    //       'danger'
+    //     )
+    //   }
+    //   if (this.$store.state.auth.loggedIn) {
+    //     this.$router.push('/dashboard')
+    //   }
+    // },
+    // notifyVue(message, type) {
+    //   this.$notify({
+    //     component: Message,
+    //     message: message,
+    //     icon: 'tim-icons icon-bell-55',
+    //     horizontalAlign: 'center',
+    //     verticalAlign: 'top',
+    //     type: type
+    //   })
+    // }
     login() {
-      UserService.login(this.model.email, this.model.password).then(res => {
-        if (res.auth) {
-          this.checkLogin(res.userId)
-          console.log('Uid:' + res.userId)
-        } else {
-          this.notifyVue(
-            'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
-            'danger'
-          )
-        }
-      })
-    },
-    checkLogin(userId) {
-      if (TokenService.getToken()) {
-        this.$store.commit('setAsLoggedIn')
-        this.$store.commit('setUserId', userId)
-        if (this.$store.state.auth.loggedIn) {
-          this.$router.push('/dashboard')
-        }
-        this.notifyVue('Willkommen zurück!', 'success')
-      } else {
-        this.notifyVue(
-          'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
-          'danger'
-        )
-      }
-      if (this.$store.state.auth.loggedIn) {
-        this.$router.push('/dashboard')
-      }
-    },
-    notifyVue(message, type) {
-      this.$notify({
-        component: Message,
-        message: message,
-        icon: 'tim-icons icon-bell-55',
-        horizontalAlign: 'center',
-        verticalAlign: 'top',
-        type: type
-      })
+      const payload = {}
+      payload.email = this.model.email
+      payload.password = this.model.password
+      payload.rememberMe = false
+      this.$store.dispatch('Auth/login', payload)
     }
   }
 }
