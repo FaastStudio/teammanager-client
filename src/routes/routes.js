@@ -6,9 +6,6 @@ import RegisterView from '@/views/Auth/AuthRegister.vue'
 
 // Admin pages
 import Dashboard from '@/pages/Dashboard.vue'
-import TeamPage from '@/pages/Team.vue'
-import TeamOverview from '@/pages/Team/TeamOverview.vue'
-import TeamCreate from '@/pages/Team/TeamCreate.vue'
 
 import Training from '@/pages/Training.vue'
 import TrainingCreate from '@/pages/TrainingCreate.vue'
@@ -29,24 +26,6 @@ const routes = [
         path: 'dashboard',
         name: 'dashboard',
         component: Dashboard
-      },
-      {
-        path: 'team',
-        name: 'Team',
-        redirect: 'team/overview',
-        component: TeamPage,
-        children: [
-          {
-            path: 'overview',
-            name: 'übersicht',
-            component: TeamOverview
-          },
-          {
-            path: 'create',
-            name: 'Erstellen',
-            component: TeamCreate
-          }
-        ]
       },
       {
         path: 'profile',
