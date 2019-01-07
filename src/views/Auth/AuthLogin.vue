@@ -1,23 +1,22 @@
 
 <template>
   <div style="width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center;">
-    <card class="col-md-4 col-12">
+    <card class="col-12 col-md-8 col-lg-4">
       <h3 slot="header" class="title">Anmelden</h3>
-      <form @submit="login()">
+      <form>
         <div class="row">
-          <div class="col-sm-12 pl-md-1 pr-md-1">
+          <div class="col-sm-12">
             <base-input
               label="Email Addresse"
               type="email"
               v-model="model.email"
               placeholder="team@email.com"
-              @keyup.enter.native="login()"
               required="true"
             ></base-input>
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-12 pl-md-1 pr-md-1">
+          <div class="col-sm-12">
             <base-input
               label="Passwort"
               type="password"
@@ -26,11 +25,15 @@
               @keyup.enter.native="login()"
               required="true"
             ></base-input>
+            <div class="col mb-3 d-flex align-items-center">
+              <input v-model="rememberMe" type="checkbox" name="rememberMe" id="rememberMe" class="ml-0 mr-2">
+              <span>Angemeldet bleiben?</span>
+            </div>
           </div>
         </div>
         <div class="row align-items-center">
-          <base-button @click="login()" slot="footer" type="primary" fill>Login</base-button>
-          <router-link to="/register" slot="footer" class="ml-4">Noch nicht dabei?</router-link>
+          <base-button @click="login()" slot="footer" type="submit" class="ml-3" :class="'btn-primary'" fill>Login</base-button>
+          <router-link to="/register" slot="footer" class="mx-auto mt-3 my-md-auto mt-lg-3">Noch keinen Account? Klicke hier!</router-link>
         </div>
       </form>
     </card>
@@ -38,9 +41,7 @@
 </template>
 
 <script>
-import { UserService } from '@/services/user.service.js'
-import { TokenService } from '@/services/storage.service.js'
-import Message from '@/components/NotificationPlugin/Notification'
+import store from '@/store'
 export default {
   props: {
     model: {
@@ -52,56 +53,38 @@ export default {
   },
   data() {
     return {
-      data: null,
-      response: null,
-      resStatus: null
+      rememberMe: false,
+      errors: []
     }
   },
   methods: {
-    login() {
-      UserService.login(this.model.email, this.model.password).then(res => {
-        if (res.auth) {
-          this.checkLogin(res.userId)
-        } else {
-          this.notifyVue(
-            'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
-            'danger'
-          )
-        }
-      })
-    },
-    checkLogin(userId) {
-      if (TokenService.getToken()) {
-        this.$store.commit('setAsLoggedIn')
-        this.$store.commit('setUserId', userId)
-        if (this.$store.state.auth.loggedIn) {
-          this.$router.push('/dashboard')
-        }
-        this.notifyVue('Willkommen zurück!', 'success')
-      } else {
-        this.notifyVue(
-          'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
-          'danger'
-        )
-      }
-      if (this.$store.state.auth.loggedIn) {
-        this.$router.push('/dashboard')
+    async login() {
+      this.errors = []
+
+      const payload = {}
+      payload.email = this.model.email
+      payload.password = this.model.password
+      payload.rememberMe = this.rememberMe
+
+      // Form Validation
+      await this.checkForm()
+      if (this.errors.length === 0) {
+        // login action
+        await store.dispatch('Auth/login', payload)
+        // fetch user data
+        await store.dispatch('User/fetchUserData')
       }
     },
-    notifyVue(message, type) {
-      this.$notify({
-        component: Message,
-        message: message,
-        icon: 'tim-icons icon-bell-55',
-        horizontalAlign: 'center',
-        verticalAlign: 'top',
-        type: type
-      })
-    }
-  },
-  computed: {
-    input() {
-      return this.model
+    checkForm() {
+      if (!this.model.email && !this.model.password) {
+        this.errors.push('Bitte alle Felder füllen!')
+      }
+      if (!this.model.email) {
+        this.errors.push('Bitte überprüfe deine Email!')
+      }
+      if (!this.model.password) {
+        this.errors.push('Bitte überprüfe dein Passwort!')
+      }
     }
   }
 }

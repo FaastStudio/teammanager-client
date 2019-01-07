@@ -1,8 +1,9 @@
 <template>
   <div class="wrapper">
-    <side-bar>
+    <side-bar :title=sideBarTitle>
       <template slot="links">
         <sidebar-link to="/dashboard" name="Dashboard" icon="tim-icons icon-chart-pie-36"/>
+        <sidebar-link to="/team" name="Team" icon="tim-icons icon-single-02"/>
         <!-- <sidebar-link to="/training/create" :name="$t('sidebar.training')" icon="tim-icons icon-spaceship"/> -->
         <sidebar-link to="/icons" name="Icons" icon="tim-icons icon-atom"/>
         <!-- <sidebar-link to="/maps" :name="$t('sidebar.maps')" icon="tim-icons icon-pin"/> -->
@@ -10,7 +11,7 @@
         <!-- <sidebar-link to="/profile" :name="$t('sidebar.userProfile')" icon="tim-icons icon-single-02"/> -->
         <!-- <sidebar-link to="/table-list" :name="$t('sidebar.tableList')" icon="tim-icons icon-puzzle-10"/> -->
         <!-- <sidebar-link to="/typography" :name="$t('sidebar.typography')" icon="tim-icons icon-align-center"/> -->
-        <base-button @click="logout()" type="danger" class="ml-4" fill>Logout</base-button>
+        <base-button @click="logout()" type="danger" class="ml-4" fill>Abmelden</base-button>
       </template>
     </side-bar>
     <div class="main-panel">
@@ -31,9 +32,7 @@ import TopNavbar from './TopNavbar.vue'
 import ContentFooter from './ContentFooter.vue'
 import DashboardContent from './Content.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import UserService from '@/services/user.service.js'
-import { TokenService } from '@/services/storage.service.js'
-import ApiService from '@/services/api.service.js'
+import store from '@/store'
 
 export default {
   components: {
@@ -49,30 +48,13 @@ export default {
       }
     },
     logout() {
-      UserService.logout()
-      if (!TokenService.getToken()) {
-        this.$store.commit('setAsLoggedOut')
-      }
-      if (!this.$store.state.auth.loggedIn) {
-        this.$router.push('/login')
-      }
-    },
-    fetchUserData() {
-      const userId = this.$store.state.user.userId
-      let customRequest = {
-        method: 'GET',
-        url: `api/auth/me`,
-        data: {
-          userId
-        }
-      }
-      ApiService.customRequest(customRequest).then(res => {
-        this.$store.state.user = res.data
-      })
+      store.dispatch('Auth/logout')
     }
   },
-  mounted() {
-    this.fetchUserData()
+  computed: {
+    sideBarTitle() {
+      return store.getters['User/getFullName']
+    }
   }
 }
 </script>

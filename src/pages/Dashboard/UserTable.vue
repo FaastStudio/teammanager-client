@@ -5,18 +5,18 @@
   </base-table>
 </template>
 <script>
-  import { BaseTable } from "@/components";
-  export default {
-    components: {
-      BaseTable
-    },
-    computed: {
-      table(){
-        // return this.$t('dashboard.usersTable');
-        return ['User 1', 'User 2']
-      }
+import { BaseTable } from '@/components'
+export default {
+  components: {
+    BaseTable
+  },
+  computed: {
+    table() {
+      // return this.$t('dashboard.usersTable');
+      return ['User 1', 'User 2']
     }
   }
+}
 </script>
 <style>
 </style>

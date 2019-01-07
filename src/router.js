@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes/routes'
+import store from './store'
 import { TokenService } from './services/storage.service'
+
 Vue.use(VueRouter)
 
 // configure router
@@ -24,7 +26,11 @@ router.beforeEach((to, from, next) => {
   const onlyWhenLoggedOut = to.matched.some(
     record => record.meta.onlyWhenLoggedOut
   )
-  const loggedIn = !!TokenService.getToken()
+  // Check for stored token in local or state
+
+  // check LogginStatus
+  const loggedIn =
+    !!TokenService.getToken() || store.getters['Auth/getAuthState']
   if (!isPublic && !loggedIn) {
     return next({
       path: '/login',
