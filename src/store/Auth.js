@@ -41,21 +41,50 @@ export default {
             TokenService.saveToken(res.data.token)
             localStorage.setItem('userId', res.data.userId)
           }
-          // Store data to state
-          context.commit('setAuthToken', res.data.token)
-          context.commit('setAsAuthenticated', res.data.auth)
-          context.commit('User/setUserData', res.data, { root: true })
-          // Set Header for future API Calls
-          ApiService.setHeader()
-          // Push to dashboard
-          router.push('/dashboard')
+          context.dispatch('storeData', res)
         } else {
           // TODO NOTIFICATION ACTION
           alert('Falsche Email/Passwort')
         }
       })
     },
-    register() {}
+    async register(context, cred) {
+      const request = {
+        method: 'post',
+        url: '/api/auth/register',
+        data: {
+          name: cred.name,
+          email: cred.email,
+          password: cred.password
+        }
+      }
+      await ApiService.customRequest(request).then(res => {
+        console.log(res)
+        // If res AUTH == True
+        if (res.data.auth) {
+          context.dispatch('storeData', res)
+        } else {
+          // TODO NOTIFICATION ACTION
+          alert('Falsche Email/Passwort')
+        }
+      })
+    },
+    // Store data to state and push to dashboard
+    storeData(context, res) {
+      // Store data to state
+      context.commit('setAuthToken', res.data.token)
+      context.commit('setAsAuthenticated', res.data.auth)
+      context.commit('User/setUserData', res.data, { root: true })
+      // Set Header for future API Calls
+      ApiService.setHeader()
+      // Push to dashboard
+      router.push('/dashboard')
+    },
+    logout(context) {
+      context.commit('logout')
+      alert('Erfolgreich abgemeldet!')
+      router.push('/login')
+    }
   },
   mutations: {
     setAuthToken(state, token) {
@@ -63,6 +92,11 @@ export default {
     },
     setAsAuthenticated(state, status) {
       state.isAuthenticated = status
+    },
+    logout(state) {
+      state.isAuthenticated = false
+      state.token = null
+      localStorage.clear()
     }
   },
   getters: {

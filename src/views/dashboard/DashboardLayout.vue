@@ -11,7 +11,7 @@
         <!-- <sidebar-link to="/profile" :name="$t('sidebar.userProfile')" icon="tim-icons icon-single-02"/> -->
         <!-- <sidebar-link to="/table-list" :name="$t('sidebar.tableList')" icon="tim-icons icon-puzzle-10"/> -->
         <!-- <sidebar-link to="/typography" :name="$t('sidebar.typography')" icon="tim-icons icon-align-center"/> -->
-        <base-button @click="logout()" type="danger" class="ml-4" fill>Logout</base-button>
+        <base-button @click="logout()" type="danger" class="ml-4" fill>Abmelden</base-button>
       </template>
     </side-bar>
     <div class="main-panel">
@@ -32,8 +32,6 @@ import TopNavbar from './TopNavbar.vue'
 import ContentFooter from './ContentFooter.vue'
 import DashboardContent from './Content.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import UserService from '@/services/user.service.js'
-import { TokenService } from '@/services/storage.service.js'
 import store from '@/store'
 
 export default {
@@ -50,13 +48,7 @@ export default {
       }
     },
     logout() {
-      UserService.logout()
-      if (!TokenService.getToken()) {
-        this.$store.commit('setAsLoggedOut')
-      }
-      if (!this.$store.state.auth.loggedIn) {
-        this.$router.push('/login')
-      }
+      store.dispatch('Auth/logout')
     }
   },
   computed: {
