@@ -2,7 +2,10 @@
   <div style="width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center;">
     <card class="col-md-4 col-12">
     <h3 slot="header" class="title">Registrieren</h3>
-    <form>
+    <div v-if="errors.length">
+      <span class="danger" v-for="(error, index) in errors" :key="index">{{ error }}</span>
+    </div>
+    <form @submit="checkForm">
       <div class="row">
       <div class="col-sm-12 pl-md-1 pr-md-1">
         <base-input label="Name" type="text" v-model="model.name" placeholder="Voller Name"></base-input>
@@ -13,6 +16,7 @@
           type="email"
           v-model="model.email"
           placeholder="team@email.com"
+          required="true"
         ></base-input>
       </div>
     </div>
@@ -23,6 +27,7 @@
           type="password"
           v-model="model.password"
           placeholder="Passwort"
+          required="true"
           @keyup.enter.native="register()"
         ></base-input>
       </div>
@@ -37,9 +42,7 @@
 </template>
 
 <script>
-import { UserService } from '@/services/user.service.js'
-import { TokenService } from '@/services/storage.service.js'
-import Message from '@/components/NotificationPlugin/Notification'
+import store from '@/store'
 export default {
   props: {
     model: {
@@ -50,7 +53,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      errors: []
+    }
   },
   computed: {
     input() {
@@ -58,49 +63,28 @@ export default {
     }
   },
   methods: {
-    register() {
-      UserService.register(
-        this.model.name,
-        this.model.email,
-        this.model.password
-      ).then(res => {
-        if (res.auth) {
-          this.checkLogin(res.userId)
-        } else {
-          this.notifyVue(
-            'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
-            'danger'
-          )
-        }
-      })
-    },
-    checkLogin(userId) {
-      if (TokenService.getToken()) {
-        this.$store.commit('setAsLoggedIn')
-        this.$store.commit('setUserId', userId)
-        if (this.$store.state.auth.loggedIn) {
-          this.$router.push('/dashboard')
-        }
-        this.notifyVue('Willkommen!', 'success')
-      } else {
-        this.notifyVue(
-          'Etwas ist wohl schief gelaufen! Bitte noch mal probiern',
-          'danger'
-        )
-      }
-      if (this.$store.state.auth.loggedIn) {
-        this.$router.push('/dashboard')
+    async register() {
+      this.errors = []
+
+      // Form Validation
+      await this.checkForm()
+      if (this.errors.length === 0) {
+        // register action
+        await store.dispatch('Auth/register', this.model)
+        // fetch user data
+        await store.dispatch('User/fetchUserData')
       }
     },
-    notifyVue(message, type) {
-      this.$notify({
-        component: Message,
-        message: message,
-        icon: 'tim-icons icon-bell-55',
-        horizontalAlign: 'center',
-        verticalAlign: 'top',
-        type: type
-      })
+    checkForm() {
+      if (!this.model.name && !this.model.email && !this.model.password) {
+        this.errors.push('Bitte alle Felder füllen!')
+      }
+      if (!this.model.name) {
+        this.errors.push('Bitte Name eingeben!')
+      }
+      if (!this.model.email) {
+        this.errors.push('Bitte überprüfe deine Email!')
+      }
     }
   }
 }

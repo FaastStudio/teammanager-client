@@ -15,14 +15,14 @@
       </ul>
       <div class="copyright">
         © {{year}} made with <i class="tim-icons icon-heart-2"></i> by
-        <a href="https://kilianstallinger.com" target="_blank">Kilian Stallinger.</a>
+        <a href="https://kilianstallinger.com" target="_blank">@kilianstallz</a>
       </div>
     </div>
   </footer>
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       year: new Date().getFullYear()
     }

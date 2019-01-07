@@ -1,33 +1,23 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+// import modules
+import Players from './store/Players'
+import Auth from './store/Auth'
+import User from './store/User'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    auth: {
-      loggedIn: false
-    },
-    user: {
-      userId: null
-    },
     app: {
       isLightMode: false
     }
   },
-  mutations: {
-    setAsLoggedIn(state) {
-      state.auth.loggedIn = true
-    },
-    setAsLoggedOut(state) {
-      state.auth.loggedIn = false
-    },
-    setUserId(state, userId) {
-      state.user.userId = userId
-    },
-    setUserData(state, data) {
-      state.user = data
-    }
-  },
-  actions: {}
+  actions: {},
+  modules: {
+    Auth,
+    User,
+    Players
+  }
 })

@@ -84,7 +84,7 @@ export default {
   components: {
     BaseTable
   },
-  data () {
+  data() {
     return {
       table1: {
         title: 'Simple Table',

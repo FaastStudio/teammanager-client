@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { TokenService } from './storage.service'
+import store from '../store'
 
 const ApiService = {
   init(baseURL) {
@@ -7,9 +8,15 @@ const ApiService = {
   },
 
   setHeader() {
-    axios.defaults.headers.common[
-      'x-access-token'
-    ] = `${TokenService.getToken()}`
+    let token = null
+    if (store.getters['Auth/getAuthToken']) {
+      token = store.getters['Auth/getAuthToken']
+    } else if (TokenService.getToken()) {
+      token = TokenService.getToken()
+    } else {
+      return
+    }
+    axios.defaults.headers.common['x-access-token'] = `${token}`
   },
 
   removeHeader() {
