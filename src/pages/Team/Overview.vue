@@ -8,22 +8,24 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col"> <p>#</p> </th>
-            <th scope="col"><p class="title">Name</p></th>
-            <th scope="col"><p class="title">Position</p></th>
-            <th scope="col"><p class="title">Spiele</p></th>
-            <th scope="col"><p class="title">Tore</p></th>
-            <th scope="col"><p class="title">Alter</p></th>
+            <th scope="col"> <input type="checkbox" name="" id=""> </th>
+            <th scope="col" class=""><p class="title">Name</p></th>
+            <th scope="col" class="d-none d-md-table-cell"><p class="title">Position</p></th>
+            <th scope="col" class="d-none d-md-table-cell"><p class="title">Spiele</p></th>
+            <th scope="col" class="d-none d-md-table-cell"><p class="title">Nummer</p></th>
+            <th scope="col" class="d-none d-md-table-cell"><p class="title">Alter</p></th>
+            <th scope="col" class="d-none d-md-table-cell"><p class="title">Bearb.</p></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(player, index) in samples" :key="index">
-            <th scope="row"> <input type="checkbox" name="" id=""> </th>
-            <td> {{player.name }} </td>
-            <td> {{player.position }} </td>
-            <td> {{player.spiele }} </td>
-            <td> {{player.tore }} </td>
-            <td> {{player.alter }} </td>
+            <th scope="row"> <input type="checkbox" @click="selectBox(String(player._id))"> </th>
+            <td> {{ player.name }} </td>
+            <td class="d-none d-md-table-cell"> {{ player.position }} </td>
+            <td class="d-none d-md-table-cell"> {{ player.spiele }} </td>
+            <td class="d-none d-md-table-cell"> {{ player.number }} </td>
+            <td class="d-none d-md-table-cell"> {{ player.alter }} </td>
+            <td class="d-none d-md-table-cell"> <base-button type="warning" icon round> <i class="tim icon-pencil"></i> </base-button> </td>
           </tr>
         </tbody>
       </table>
@@ -40,30 +42,53 @@ export default {
   },
   data() {
     return {
+      select: [],
       samples: [
         {
+          _id: '1',
           name: 'Kilian Stallinger',
           position: 'Tor',
           spiele: 'Alle',
           tore: 'Unendl.',
-          alter: '18'
+          alter: '18',
+          number: '10'
         },
         {
+          _id: '2',
           name: 'Kilian Stallinger',
           position: 'Tor',
           spiele: 'Alle',
           tore: 'Unendl.',
-          alter: '18'
+          alter: '18',
+          number: '11'
         },
         {
+          _id: '3',
           name: 'Kilian Stallinger',
           position: 'Tor',
           spiele: 'Alle',
           tore: 'Unendl.',
-          alter: '18'
+          alter: '18',
+          number: '12'
         }
       ]
     }
+  },
+  methods: {
+    selectBox(id) {
+      if (this.select.includes(String(id))) {
+        let index = this.select.indexOf(String(id))
+        let arr = this.select
+        arr.splice(index, 1)
+        this.select = arr
+      } else {
+        let arr = this.select
+        arr.push(String(id))
+        console.log(arr)
+        this.select = arr
+      }
+    },
+    selectAllBoxes() {}
   }
 }
 </script>
