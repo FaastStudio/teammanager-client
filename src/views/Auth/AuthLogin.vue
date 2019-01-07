@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   props: {
     model: {
@@ -52,15 +53,38 @@ export default {
   },
   data() {
     return {
-      rememberMe: false
+      rememberMe: false,
+      errors: []
     }
   },
   methods: {
-    login() {
+    async login() {
+      this.errors = []
+
       const payload = {}
       payload.email = this.model.email
       payload.password = this.model.password
-      payload.rememberMe = this.$store.dispatch('Auth/login', payload)
+      payload.rememberMe = this.rememberMe
+
+      // Form Validation
+      await this.checkForm()
+      if (this.errors.length === 0) {
+        // login action
+        await store.dispatch('Auth/login', payload)
+        // fetch user data
+        await store.dispatch('User/fetchUserData')
+      }
+    },
+    checkForm() {
+      if (!this.model.email && !this.model.password) {
+        this.errors.push('Bitte alle Felder füllen!')
+      }
+      if (!this.model.email) {
+        this.errors.push('Bitte überprüfe deine Email!')
+      }
+      if (!this.model.password) {
+        this.errors.push('Bitte überprüfe dein Passwort!')
+      }
     }
   }
 }

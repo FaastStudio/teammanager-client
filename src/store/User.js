@@ -14,6 +14,9 @@ export default {
   mutations: {
     setUserData(state, data) {
       state.userData = data
+    },
+    logout(state) {
+      state.userData = null
     }
   },
   getters: {

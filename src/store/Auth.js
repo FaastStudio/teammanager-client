@@ -21,7 +21,6 @@ export default {
       //    push to Dashboard
       // if res.auth == false -> notificationAction
       // @returns access_token to Auth Module & User Data to User Module
-      console.log(cred)
       // Config Request
       const request = {
         method: 'post',
@@ -31,10 +30,9 @@ export default {
           password: cred.password
         }
       }
-
+      // Request Login
       await ApiService.customRequest(request).then(res => {
         console.log(res)
-        // If res AUTH == True
         if (res.data.auth) {
           // If RememberMe -> store token && userId to localStorage
           if (cred.rememberMe) {
@@ -74,14 +72,15 @@ export default {
       // Store data to state
       context.commit('setAuthToken', res.data.token)
       context.commit('setAsAuthenticated', res.data.auth)
-      context.commit('User/setUserData', res.data, { root: true })
       // Set Header for future API Calls
       ApiService.setHeader()
       // Push to dashboard
       router.push('/dashboard')
     },
-    logout(context) {
-      context.commit('logout')
+    async logout(context) {
+      await context.commit('logout')
+      await context.commit('User/logout', null, { root: true })
+      // TODO Notification
       alert('Erfolgreich abgemeldet!')
       router.push('/login')
     }

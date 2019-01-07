@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import routes from './routes/routes'
 import store from './store'
 import { TokenService } from './services/storage.service'
-import ApiService from './services/api.service'
+
 Vue.use(VueRouter)
 
 // configure router
@@ -31,17 +31,7 @@ router.beforeEach((to, from, next) => {
   // check LogginStatus
   const loggedIn =
     !!TokenService.getToken() || store.getters['Auth/getAuthState']
-  // pass localStorage to state
-  if (!!TokenService.getToken() && !store.getters['Auth/getAuthState']) {
-    store.commit('Auth/setAuthToken', TokenService.getToken())
-    store.commit('Auth/setAsAuthenticated', true)
-    ApiService.setHeader()
-    store.dispatch('User/fetchUserData')
-  }
-  console.log('loggedIn: ' + loggedIn)
   if (!isPublic && !loggedIn) {
-    localStorage.removeItem('userId')
-    localStorage.removeItem('x-access-token')
     return next({
       path: '/login',
       redirect: '/login'

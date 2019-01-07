@@ -63,25 +63,26 @@ export default {
     }
   },
   methods: {
-    register() {
-      this.checkForm()
+    async register() {
+      this.errors = []
+
+      // Form Validation
+      await this.checkForm()
       if (this.errors.length === 0) {
-        store.dispatch('Auth/register', this.model)
+        // register action
+        await store.dispatch('Auth/register', this.model)
+        // fetch user data
+        await store.dispatch('User/fetchUserData')
       }
     },
     checkForm() {
-      if (
-        !this.model.name &&
-        !this.model.email &&
-        !this.model.password &&
-        !this.model.email.includes('@')
-      ) {
+      if (!this.model.name && !this.model.email && !this.model.password) {
         this.errors.push('Bitte alle Felder füllen!')
       }
       if (!this.model.name) {
         this.errors.push('Bitte Name eingeben!')
       }
-      if (!this.model.email && !this.model.email.includes('@')) {
+      if (!this.model.email) {
         this.errors.push('Bitte überprüfe deine Email!')
       }
     }
