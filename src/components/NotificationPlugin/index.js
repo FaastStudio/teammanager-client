@@ -11,16 +11,16 @@ const NotificationStore = {
     closeOnClick: true,
     showClose: true
   },
-  setOptions (options) {
+  setOptions(options) {
     this.settings = Object.assign(this.settings, options)
   },
-  removeNotification (timestamp) {
+  removeNotification(timestamp) {
     const indexToDelete = this.state.findIndex(n => n.timestamp === timestamp)
     if (indexToDelete !== -1) {
       this.state.splice(indexToDelete, 1)
     }
   },
-  addNotification (notification) {
+  addNotification(notification) {
     if (typeof notification === 'string' || notification instanceof String) {
       notification = { message: notification }
     }
@@ -31,7 +31,7 @@ const NotificationStore = {
     notification = Object.assign({}, this.settings, notification)
     this.state.push(notification)
   },
-  notify (notification) {
+  notify(notification) {
     if (Array.isArray(notification)) {
       notification.forEach(notificationInstance => {
         this.addNotification(notificationInstance)
@@ -43,13 +43,13 @@ const NotificationStore = {
 }
 
 const NotificationsPlugin = {
-  install (Vue, options) {
-    let app = new Vue({
+  install(Vue, options) {
+    var app = new Vue({
       data: {
         notificationStore: NotificationStore
       },
       methods: {
-        notify (notification) {
+        notify(notification) {
           this.notificationStore.notify(notification)
         }
       }

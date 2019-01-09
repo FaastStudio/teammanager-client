@@ -33,21 +33,21 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       notifications: this.$notifications.state
     }
   },
   methods: {
-    removeNotification (timestamp) {
+    removeNotification(timestamp) {
       this.$notifications.removeNotification(timestamp)
     }
   },
-  created () {
+  created() {
     this.$notifications.settings.overlap = this.overlap
   },
   watch: {
-    overlap: function (newVal) {
+    overlap: function(newVal) {
       this.$notifications.settings.overlap = newVal
     }
   }

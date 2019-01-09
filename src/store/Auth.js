@@ -77,11 +77,18 @@ export default {
       // Push to dashboard
       router.push('/dashboard')
     },
-    async logout(context) {
+    async logout(context, { vm }) {
       await context.commit('logout')
       await context.commit('User/logout', null, { root: true })
       // TODO Notification
-      alert('Erfolgreich abgemeldet!')
+      vm.$notify({
+        message: 'Erfolgreich abgemeldet!',
+        timestamp: Date.now(),
+        type: 'success',
+        verticalAlign: 'top',
+        horizontalAlign: 'center',
+        closeOnClick: true
+      })
       router.push('/login')
     }
   },

@@ -48,7 +48,7 @@ export default {
       }
     },
     logout() {
-      store.dispatch('Auth/logout')
+      store.dispatch('Auth/logout', { vm: this })
     }
   },
   computed: {
