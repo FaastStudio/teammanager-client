@@ -49,7 +49,7 @@ export default {
     },
     horizontalAlign: {
       type: String,
-      default: 'right',
+      default: 'center',
       validator: value => {
         let acceptedValues = ['left', 'center', 'right']
         return acceptedValues.indexOf(value) !== -1
@@ -72,7 +72,7 @@ export default {
     },
     timestamp: {
       type: Date,
-      default: () => new Date()
+      default: () => new Date.now()
     },
     component: {
       type: [Object, Function]

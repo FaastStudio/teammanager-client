@@ -81,7 +81,7 @@ export default {
       await context.commit('logout')
       await context.commit('User/logout', null, { root: true })
       // TODO Notification
-      alert('Erfolgreich abgemeldet!')
+
       router.push('/login')
     }
   },

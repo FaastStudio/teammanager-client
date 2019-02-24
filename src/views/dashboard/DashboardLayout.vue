@@ -2,7 +2,7 @@
   <div class="wrapper">
     <side-bar :title=sideBarTitle>
       <template slot="links">
-        <sidebar-link to="/dashboard" name="Dashboard" icon="tim-icons icon-chart-pie-36"/>
+        <sidebar-link to="/dashboard" :name="$t('sidebar.dashboard')" icon="tim-icons icon-chart-pie-36"/>
         <sidebar-link to="/team" name="Team" icon="tim-icons icon-single-02"/>
         <!-- <sidebar-link to="/training/create" :name="$t('sidebar.training')" icon="tim-icons icon-spaceship"/> -->
         <sidebar-link to="/icons" name="Icons" icon="tim-icons icon-atom"/>
@@ -32,7 +32,7 @@ import TopNavbar from './TopNavbar.vue'
 import ContentFooter from './ContentFooter.vue'
 import DashboardContent from './Content.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import store from '@/store'
+import store from '../../store.js'
 
 export default {
   components: {
@@ -48,12 +48,13 @@ export default {
       }
     },
     logout() {
-      store.dispatch('Auth/logout')
+      console.log('TODO: Logout')
+      console.log(store.userProfile)
     }
   },
   computed: {
     sideBarTitle() {
-      return store.getters['User/getFullName']
+      return store.state.currentUser.displayName || store.state.userProfile.name
     }
   }
 }
