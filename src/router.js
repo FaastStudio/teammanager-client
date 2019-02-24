@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes/routes'
+import firebase from 'firebase/app'
+import 'firebase/auth'
 import store from './store'
-import { TokenService } from './services/storage.service'
 
 Vue.use(VueRouter)
 
@@ -26,11 +27,12 @@ router.beforeEach((to, from, next) => {
   const onlyWhenLoggedOut = to.matched.some(
     record => record.meta.onlyWhenLoggedOut
   )
-  // Check for stored token in local or state
-
   // check LogginStatus
-  const loggedIn =
-    !!TokenService.getToken() || store.getters['Auth/getAuthState']
+  const loggedIn = firebase.auth().currentUser
+  if (!!loggedIn && (!store.state.currentUser || !store.state.userProfile)) {
+    store.commit('setCurrentUser', loggedIn)
+    store.dispatch('fetchUserProfile')
+  }
   if (!isPublic && !loggedIn) {
     return next({
       path: '/login',

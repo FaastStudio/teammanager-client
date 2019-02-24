@@ -1,28 +1,25 @@
 import Vue from 'vue'
 import App from './App.vue'
-import axios from 'axios'
 import router from './router'
 import store from './store'
 import BlackDashboard from './plugins/blackDashboard'
-// import i18n from './i18n'
-import ApiService from './services/api.service'
+import i18n from './i18n'
 import './registerServiceWorker'
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').load()
-}
+const fb = require('./db/firebaseConfig.js')
 
 Vue.use(BlackDashboard)
 
 Vue.config.productionTip = false
 
-// Set BaseURL of the API
-ApiService.init(process.env.API_URL || 'http://localhost:3000')
-
-new Vue({
-  router,
-  store,
-  axios,
-  // i18n,
-  render: h => h(App)
-}).$mount('#app')
+let app
+fb.auth.onAuthStateChanged(user => {
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      i18n,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+})
