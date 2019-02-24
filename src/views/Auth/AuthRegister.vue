@@ -2,9 +2,6 @@
   <div style="width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center;">
     <card class="col-md-4 col-12">
     <h3 slot="header" class="title">Registrieren</h3>
-    <div v-if="errors.length">
-      <span class="danger" v-for="(error, index) in errors" :key="index">{{ error }}</span>
-    </div>
     <form @submit="checkForm">
       <div class="row">
       <div class="col-sm-12 pl-md-1 pr-md-1">
@@ -42,7 +39,7 @@
 </template>
 
 <script>
-import store from '@/store'
+const fb = require('../../db/firebaseConfig.js')
 export default {
   props: {
     model: {
@@ -53,9 +50,7 @@ export default {
     }
   },
   data() {
-    return {
-      errors: []
-    }
+    return {}
   },
   computed: {
     input() {
@@ -63,28 +58,29 @@ export default {
     }
   },
   methods: {
-    async register() {
-      this.errors = []
-
-      // Form Validation
-      await this.checkForm()
-      if (this.errors.length === 0) {
-        // register action
-        await store.dispatch('Auth/register', this.model)
-        // fetch user data
-        await store.dispatch('User/fetchUserData')
-      }
-    },
-    checkForm() {
-      if (!this.model.name && !this.model.email && !this.model.password) {
-        this.errors.push('Bitte alle Felder füllen!')
-      }
-      if (!this.model.name) {
-        this.errors.push('Bitte Name eingeben!')
-      }
-      if (!this.model.email) {
-        this.errors.push('Bitte überprüfe deine Email!')
-      }
+    register() {
+      fb.auth
+        .createUserWithEmailAndPassword(this.model.email, this.model.password)
+        .then(user => {
+          this.$store.commit('setCurrentUser', user.user)
+          // create user obj
+          fb.usersCollection
+            .doc(user.user.uid)
+            .set({
+              name: this.form.name,
+              createdOn: new Date()
+            })
+            .then(() => {
+              this.$store.dispatch('fetchUserProfile')
+              this.$router.push('/dashboard')
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
